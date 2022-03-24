@@ -1,0 +1,279 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+  
+  <mapper namespace="com.collaverse.mvc.collabo.model.dao.CollaboMapper">
+  		<sql id="promotionListSql">
+  					SELECT PMT_NO, 
+  					PMT_TITLE, 
+  					PMT_IMG_PATH, 
+  					PMT_CONTENT, 
+  					START_DATE, 
+  					END_DATE, 
+  					READCOUNT, 
+  					C_NO,
+  					HEART_HIT
+					FROM PROMOTION
+  		</sql>
+  		
+  		 <sql id="productListSql">
+  					SELECT PRO_NO, 
+  					PRO_NAME, 
+  					PRO_PRICE, 
+  					PRO_CONTENT, 
+  					PRO_QTY, 
+  					PRO_IMG_PATH, 
+  					C_NO,
+  					PMT_NO
+					FROM PRODUCT
+  		</sql>  		
+
+  		 <sql id="brandListSql">
+  					SELECT BR_MEMBER_NO, 
+  					BR_NAME, 
+  					BR_CONTENT, 
+  					BR_IMG_PATH, 
+  					BR_PMT_NO
+					FROM BRAND
+  		</sql>  	
+  				
+  		<resultMap type="com.collaverse.mvc.collabo.model.vo.Promotion" id="promotionListResultMap">
+  		<id property="no" column="PMT_NO"/>
+  		<result property="title" column="PMT_TITLE"/>
+  		<result property="imgPath" column="PMT_IMG_PATH"/>
+  		<result property="content" column="PMT_CONTENT"/>
+  		<result property="startDate" column="START_DATE"/>
+  		<result property="endDate" column="END_DATE"/>
+  		<result property="readCount" column="READCOUNT"/>
+  		<result property="cNo" column="C_NO"/>	 
+  		<result property="heartHit" column="HEART_HIT" />
+  		</resultMap>
+  		
+  		<resultMap type="com.collaverse.mvc.collabo.model.vo.Product" id="productListResultMap">
+	  		<id property="proNo" column="PRO_NO"/>
+	  		<result property="proName" column="PRO_NAME"/>
+	  		<result property="proPrice" column="PRO_PRICE"/>
+	  		<result property="proContent" column="PRO_CONTENT"/>
+	  		<result property="proQty" column="PRO_QTY"/>
+	  		<result property="proImgpath" column="PRO_IMG_PATH"/>
+	  		<result property="cNo" column="C_NO"/>
+	  		<result property="pmtNo" column="PMT_NO"/>  		
+  		</resultMap>
+  		
+  		<resultMap type="com.collaverse.mvc.collabo.model.vo.Heart" id="heartListResultMap">
+  			<id property="heartNo" column="HEART_NO" />
+  			<result property="heartPmtNo" column="HEART_PMT_NO"/>
+  			<result property="heartMemNo" column="HEART_MEM_NO"/>
+  			<result property="heartCheck" column="HEARTCHECK"/>
+  		</resultMap>
+  		
+  		<resultMap type="com.collaverse.mvc.collabo.model.vo.Brand" id="brandListResultMap">
+	  		<id property="brMemberNo" column="BR_MEMBER_NO"/>
+	  		<result property="brName" column="BR_NAME"/>
+	  		<result property="brContent" column="BR_CONTENT"/>
+	  		<result property="brImgPath" column="BR_IMG_PATH"/>
+	  		<result property="brPmtNo" column="BR_PMT_NO"/>  		
+  		</resultMap>  		
+  		
+  		<!-- PROMOTION 전체 조회 -->
+  		<select id="selectAll" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/>
+  			 
+  		</select>
+  		
+  		<!-- 메인에서 쓸 좋아요 순위 3개 -->
+  		<select id="selectTop3"  resultMap="promotionListResultMap">
+	  		SELECT ROWNUM, RESULT.*
+			FROM (SELECT PMT_NO, PMT_TITLE, PMT_IMG_PATH, HEART_HIT
+			    FROM PROMOTION
+			    ORDER BY HEART_HIT DESC) RESULT
+			WHERE ROWNUM <![CDATA[<]]>=3
+  		</select>
+  		
+  		
+  		<select id="getPromotionCount" parameterType="map" resultType="_int">
+			SELECT COUNT(*) 
+			FROM PROMOTION
+			WHERE PMT_STATUS = 'Y'
+			<choose>
+					<when test="title != null">
+							AND PMT_TITLE LIKE '%' || #{title} || '%'
+					</when>
+					<when test="content != null">
+							AND PMT_CONTENT LIKE '%' || #{content} || '%'
+					</when>
+			</choose>
+		</select>
+    
+		
+		<select id="getPromotionInfo" parameterType="_int" 
+			resultMap="promotionListResultMap" resultType="com.collaverse.mvc.collabo.model.vo.Promotion">
+			SELECT *
+			FROM PROMOTION
+			WHERE PMT_NO = #{ pmtNo }
+		</select>
+		
+		
+		<select id="getProductInfo" parameterType="_int" 
+			resultMap="productListResultMap" resultType="arrayList">
+			SELECT *
+			FROM PRODUCT
+			WHERE PMT_NO = #{ pmtNo }
+		</select>
+		
+		
+		<select id="heartCheck" parameterType="map" resultType="_int">
+			SELECT COUNT(*)
+			FROM HEART
+			WHERE HEART_PMT_NO = #{ pmt_no }
+    			AND HEART_MEM_NO = #{ heart_mem_no }
+		</select>	
+		
+		
+		<insert id="insertHeart" parameterType="map">
+			INSERT INTO HEART(HEART_NO, HEART_PMT_NO, HEART_MEM_NO)
+			VALUES (SEQ_H_HEART_NO.NEXTVAL, #{ pmt_no }, #{ heart_mem_no })
+		</insert>
+    
+    
+    	<update id="addHeartHit" parameterType="_int">
+	    	UPDATE PROMOTION 
+			SET HEART_HIT = HEART_HIT + 1
+			WHERE PMT_NO = #{ pmt_no }
+    	</update>
+    	
+    	
+    	<update id="updateHeartCheck" parameterType="map">
+	    	UPDATE HEART
+			SET HEARTCHECK = 1
+			WHERE HEART_PMT_NO = #{ pmt_no }
+			    AND HEART_MEM_NO = #{ heart_mem_no }
+    	</update>
+    
+    
+  		<update id="updateHeartCheckCancel" parameterType="map">
+  			UPDATE HEART
+			SET HEARTCHECK = 0
+			WHERE HEART_PMT_NO = #{ pmt_no }
+			    AND HEART_MEM_NO = #{ heart_mem_no }
+  		</update>
+  		
+  		
+  		<update id="minusHeartHit" parameterType="_int">
+	    	UPDATE PROMOTION 
+			SET HEART_HIT = HEART_HIT - 1
+			WHERE PMT_NO = #{ pmt_no }
+    	</update>
+    	
+    	
+    	<delete id="deleteHeart" parameterType="map">
+    		DELETE FROM HEART 
+			WHERE HEART_PMT_NO = #{ pmt_no }
+			    AND HEART_MEM_NO = #{ heart_mem_no }
+    	</delete>
+    	
+  		<!-- 카테고리별 프로모션 정보 받아오는 부분 -->
+  		<select id="selectLiving" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/> 			 
+  			 WHERE C_NO = '1' 
+  		</select>
+    
+    
+  		<select id="selectCulture" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/>
+  			 WHERE C_NO = '2' 
+  		</select>
+  		
+    
+  		<select id="selectFood" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/>	 
+  			 WHERE C_NO = '3' 
+  		</select>   		  		
+
+    
+  		<select id="selectTech" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/> 			 
+  			 WHERE C_NO = '4' 
+  		</select> 
+  		
+  		<select id="selectFashion" parameterType="map" resultMap="promotionListResultMap">
+  			<include refid="promotionListSql"/>  			 
+  			 WHERE C_NO = '5' 
+  		</select> 
+  		
+  		<!-- 카테고리별 상품 정보 받아오는 부분 -->
+  		<select id="selectLproduct" parameterType="map" resultMap="productListResultMap">
+  			<include refid="productListSql"/>
+  			 WHERE C_NO = '1' 
+  		</select>
+  		
+  		<select id="selectCproduct" parameterType="map" resultMap="productListResultMap">
+  			<include refid="productListSql"/>
+  			 WHERE C_NO = '2' 
+  		</select>  	  		
+
+  		<select id="selectFproduct" parameterType="map" resultMap="productListResultMap">
+  			<include refid="productListSql"/>
+  			 WHERE C_NO = '3' 
+  		</select>
+ 
+  		<select id="selectTproduct" parameterType="map" resultMap="productListResultMap">
+  			<include refid="productListSql"/>
+  			 WHERE C_NO = '4' 
+  		</select>
+
+  		<select id="selectFsproduct" parameterType="map" resultMap="productListResultMap">
+  			<include refid="productListSql"/>
+  			 WHERE C_NO = '5' 
+  		</select>
+  		
+  		<!-- Brand 조회 -->
+  		<select id="selectBrand" parameterType="map" resultMap="brandListResultMap">
+  			<include refid="brandListSql"/>
+  		</select>
+  		
+  		<!-- 브랜드 알파벳 정렬 부분 -->
+  		<select id="selectBrandDetail2" parameterType="String" resultMap="brandListResultMap">
+			SELECT *
+			FROM BRAND 
+			WHERE REGEXP_LIKE (BR_NAME, '^[ ${ alphabet } ]')		
+  		</select>
+  		 		
+  		<!-- Promotion VO 에 INSERT 하는 부분 -->  
+  		<!-- Promotion VO 에 pmtNo 받아올라고 첫 번째 INSERT 하는 부분 -->
+  		<insert id="promotionSave" parameterType="com.collaverse.mvc.collabo.model.vo.Promotion"
+  			useGeneratedKeys="true" keyProperty="no" keyColumn="PMT_NO">  			
+  			INSERT INTO PROMOTION (
+			    PMT_NO, PMT_TITLE, PMT_IMG_PATH, PMT_CONTENT,
+			    PMT_STATUS, START_DATE, END_DATE,
+			    READCOUNT, C_NO, HEART_HIT
+			) VALUES (
+			    SEQ_PROMOTION_NO.NEXTVAL, #{ title }, '/resources/images/promotion/promotion', #{ content },
+			    'Y', #{ startDate }, #{ endDate }, 
+			    0, #{ cNo }, 0
+			)
+  		</insert>
+  		
+  		
+  		<!-- ProductVo에 INSERT 하는 부분 -->  	
+  		<insert id="productSave" parameterType="com.collaverse.mvc.collabo.model.vo.Product"
+  			useGeneratedKeys="true" keyProperty="proNo" keyColumn="PRO_NO">
+  			INSERT INTO PRODUCT (
+  				PRO_NO, PRO_NAME, PRO_PRICE, PRO_CONTENT,
+  				PRO_QTY, PRO_IMG_PATH, C_NO, PMT_NO
+  			) VALUES (
+  				SEQ_PRODUCT_NO.NEXTVAL, #{ proName }, #{ proPrice }, #{ proContent }, #{ proQty }, '/resources/images/product/product',
+  				#{ cNo }, #{ pmtNo }
+  			)
+  		</insert>
+  		
+  		<!-- ProductVo에 UPDATE 하는 부분 -->
+  		<update id="productUpdate" parameterType="com.collaverse.mvc.collabo.model.vo.Product">
+  			UPDATE PRODUCT
+  			SET PMT_NO = #{ pmtNo }
+  			WHERE PRO_NO = #{ proNo }
+  		</update>
+
+  </mapper>

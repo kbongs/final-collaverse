@@ -1,0 +1,191 @@
+/*-------------------------- list.jsp --------------------------*/
+
+body {
+	display: block;
+    margin: 8px;
+}
+
+.collection_container{
+	height:auto;
+}
+  	
+.title_and_write_button {
+	height: 90px;
+}
+  		
+#mypage_mycollection_title {
+    /* width: 100%; */
+    /* height: 90px; */
+    /* border: 1px solid black; */
+    /* text-align: left; */
+    /* font-size:30px; */
+    /* padding: 30px 0 20px 30px; */
+    /* box-sizing: border-box; */
+    /* display: inline-block; */
+    /* text-align: center; */
+    /* margin: 30px 0 30px 30px; */
+}
+
+#collection_write_button_space {
+	width: 21%;
+	height: 30px;
+	display: inline-block;
+	background-color: #730e74;
+	margin: 0 0 0 60%;
+}
+
+.mypage_mycollection_list_container {
+    width: 70%;
+    /* height: 100%; */
+    margin: 0 200px 40px 250px;
+}
+
+.mypage_mycollection_list {
+    /* height: 100%; */
+    /* margin: 0 0 30px 0; */
+}
+
+.mypage_mycollection_list .collection_list {
+    /* float : left; */
+    display: inline-block;
+}
+
+#collection_box {
+    width: 30%;
+    height: 300px;
+    /* border: 1px solid rgb(89, 22, 145); */
+    margin: 20px 15px 0 0;
+}
+      
+#collection_no_collectionList {
+    text-align : center;
+    margin: 150px 0 150px 0px;
+    font-family: 'Sam3KRFont';
+    font-size: 30px;
+    color: #dbeaf8;
+    text-shadow: 4px 4px 0px #faaf22;
+    /* text-shadow: -4px -4px 0px #faaf22; */
+}
+
+#writeCollection {
+	background-color:  #730e74;
+	font-family: 'Sam3KRFont';
+	color: white;
+	font-size: 20px;
+	text-align: center;
+	display: inline-block;
+	margin: 0 0 0 780px;
+	width: 310px;
+}
+
+.mini_title {
+	font-family: 'Sam3KRFont';
+	font-size: 30px;
+	text-align: left;
+	color: #730e74;
+	margin: 50px 0 30px 150px;
+	width: 60%;
+	display: inline-block;
+}
+
+#delete_btn_y, #delete_btn_n, #update_btn, #delete_btn{
+	font-family: 'Sam3KRFont';
+	font-size: 20px;
+	color: white;
+}
+
+#delete_btn_y:hover{
+	color: #faae22;
+}
+
+#delete_btn_n:hover{
+	color: #faae22;
+}
+
+#update_btn:hover{
+	color: #faae22;
+}
+
+#delete_btn:hover{
+	color: #faae22;
+}
+
+#deleteModalColoring{
+	background-color: #730e74;
+	color: white;
+	text-align: center;
+	font-family: 'DOSGothic';
+	font-size: 15px;
+	padding: 5px 0 5px  0;
+}
+
+
+#cltContent {
+	font-family: 'DOSGothic';
+}
+
+
+#follow_btn {
+ 	/* 고정값 */
+ 	background-color:#720e74;
+ 	border-radius:7px;
+ 	border: 2px solid  #faae22;
+ 	cursor:pointer;
+ 	color:#ffffff;
+ 	font-family: 'Sam3KRFont';
+ 	font-size:14px;
+ 	padding:10px 27px;
+ 	text-decoration:none;
+ 	text-shadow: 0px 0px 0px #faaf22;
+	/* 변경값 */
+ 	display:inline-block;
+ 	width: 200px;
+}
+
+
+#follow_btn:hover {
+  	/* 고정값 */
+	background-color:#faae22;
+	color: #720e74;
+	border: 2px solid #720e74;
+	
+}
+
+
+#follow_btn:active {
+	position:relative;
+	top:1px;
+}
+
+
+#unfollow_btn {
+ 	/* 고정값 */
+ 	background-color:#faae22;
+ 	border-radius:7px;
+ 	border: 2px solid  #720e74;
+ 	cursor:pointer;
+ 	color:#ffffff;
+ 	font-family: 'Sam3KRFont';
+ 	font-size:14px;
+ 	padding:10px 27px;
+ 	text-decoration:none;
+ 	text-shadow: 0px 0px 0px #faaf22;
+	/* 변경값 */
+ 	display:inline-block;
+ 	width: 200px;
+}
+
+
+#unfollow_btn:hover {
+  	/* 고정값 */
+	background-color:#720e74;
+	color: #faae22;
+	border: 2px solid #faae22;
+	
+}
+
+
+#unfollow_btn:active {
+	position:relative;
+	top:1px;
+}

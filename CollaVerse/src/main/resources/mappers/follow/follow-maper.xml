@@ -1,0 +1,150 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+
+<mapper namespace="com.collaverse.mvc.follow.model.dao.FollowMapper">
+
+	<resultMap type="com.collaverse.mvc.follow.model.vo.Follower" id="FollowerMap">
+		<id property="followerNo" column="FOLLOWER_NO"/>
+		<result property="toMemNo" column="TO_MEM_NO"/>
+		<result property="toMemNick" column="NICKNAME"/>
+		<result property="toMemId" column="ID"/>
+		<result property="fromMemNo" column="FROM_MEM_NO"/>
+		<result property="followerCreateDate" column="FOLLOWER_CREATE_DATE"/>
+		<result property="profileImg" column="PROFILE_IMG" />
+	</resultMap>
+	
+	<resultMap type="com.collaverse.mvc.follow.model.vo.Following" id="FollowingMap">
+		<id property="followingNo" column="FOLLOWING_NO"/>
+		<result property="fromMemNo" column="FROM_MEM_NO"/>
+		<result property="toMemNo" column="TO_MEM_NO"/>
+		<result property="toMemNick" column="NICKNAME"/>
+		<result property="toMemId" column="ID"/>
+		<result property="followingCreateDate" column="FOLLOWING_CREATE_DATE"/>
+		<result property="profileImg" column="PROFILE_IMG" />
+	</resultMap>
+	
+	
+	<select id="getFollowerList" parameterType="_int" resultType="arrayList" 
+		resultMap="FollowerMap">
+		SELECT F.FOLLOWER_NO, F.TO_MEM_NO, F.TO_MEM_NO, M.NICKNAME, M.ID,
+			F.FROM_MEM_NO, F.FOLLOWER_CREATE_DATE, M.PROFILE_IMG 
+		FROM FOLLOWER F
+		JOIN MEMBER M ON(M.MEMBER_NO = F.FROM_MEM_NO)
+		WHERE F.FROM_MEM_NO IN (SELECT F.FROM_MEM_NO
+		                        FROM FOLLOWER F
+		                        JOIN MEMBER M ON(M.MEMBER_NO = F.TO_MEM_NO)
+		                        WHERE F.TO_MEM_NO = #{ toMemNo })
+			AND F.TO_MEM_NO = #{ toMemNo }	
+		ORDER BY FOLLOWER_CREATE_DATE DESC
+	</select>
+	
+	
+	<select id="countFollower" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{ toMemNo }
+	</select>
+	
+	
+	<select id="getFollowingList" parameterType="_int" resultType="arrayList" 
+		resultMap="FollowingMap">
+		SELECT F.FOLLOWING_NO, F.TO_MEM_NO, M.NICKNAME, M.ID,
+			F.FROM_MEM_NO, F.FOLLOWING_CREATE_DATE, M.PROFILE_IMG <!-- 나중에 프로필 이미지도 추가해야함 -->
+		FROM FOLLOWING F
+		JOIN MEMBER M ON (F.TO_MEM_NO = M.MEMBER_NO)
+		WHERE F.TO_MEM_NO IN (SELECT F.TO_MEM_NO
+		                        FROM FOLLOWING F
+		                        JOIN MEMBER M ON(M.MEMBER_NO = F.TO_MEM_NO)
+		                        WHERE F.FROM_MEM_NO = #{ fromMemNo } ) 
+		    AND F.FROM_MEM_NO = #{ fromMemNo }
+		ORDER BY F.FOLLOWING_CREATE_DATE DESC
+	</select>
+
+
+	<select id="countFollowing" parameterType="_int" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWING
+		WHERE FROM_MEM_NO = #{ fromMemNo }
+	</select>
+	
+
+	<insert id="insertFollower" parameterType="map">
+		INSERT INTO FOLLOWER (
+			FOLLOWER_NO, TO_MEM_NO, FROM_MEM_NO, FOLLOWER_CREATE_DATE, FOLLOWERCHECK)
+		VALUES (
+			SEQ_FOLLOWER_NO.NEXTVAL, #{ toMemNo }, #{ fromMemNo }, DEFAULT, 1)
+	</insert>
+	
+	
+	<insert id="insertFollowing" parameterType="map">
+		INSERT INTO FOLLOWING ( 
+			FOLLOWING_NO, FROM_MEM_NO, TO_MEM_NO, FOLLOWING_CREATE_DATE, FOLLOWINGCHECK)
+		VALUES (
+			SEQ_FOLLOWING_NO.NEXTVAL, #{ fromMemNo }, #{ toMemNo }, DEFAULT, 1)
+	</insert>
+	
+	
+	<delete id="deleteFollower" parameterType="map">
+		DELETE FROM FOLLOWER
+		WHERE  TO_MEM_NO = #{ toMemNo }
+		    AND FROM_MEM_NO = #{ fromMemNo }
+	</delete>
+	
+	<delete id="deleteFollowing" parameterType="map">
+		DELETE FROM FOLLOWING 
+		WHERE FROM_MEM_NO =  #{ fromMemNo }
+		    AND TO_MEM_NO = #{ toMemNo }
+	</delete>
+	
+	<!-- 금일 팔로우 수 -->
+	<select id = "getTodayCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} AND TO_CHAR(FOLLOWER_CREATE_DATE) = TO_CHAR(SYSDATE)
+	</select>
+	
+	<!-- 작일 팔로우 수 -->
+	<select id = "getYesterdayCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} AND TO_CHAR(FOLLOWER_CREATE_DATE) = TO_CHAR(SYSDATE - 1)
+	</select>
+	
+	<!-- 금주 팔로우 토탈 수 기준(월-일) -->
+	<select id = "getThisweekCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} 
+			AND TO_CHAR(FOLLOWER_CREATE_DATE) BETWEEN TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'IW')), 'YY/MM/DD') AND TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'D')+7), 'YY/MM/DD')
+	</select>
+	
+	<!-- 지난주 팔로우 토탈 수 기준(월-일) -->
+	<select id = "getLastweekCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} 
+			AND TO_CHAR(FOLLOWER_CREATE_DATE) BETWEEN TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'IW')-7), 'YY/MM/DD') AND TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'D')), 'YY/MM/DD')
+	</select>
+	
+	<!-- 이번달 팔로우 토탈 수 기준 -->
+	<select id = "getThismonthCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} 
+			AND TO_CHAR(FOLLOWER_CREATE_DATE) BETWEEN TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'MM')), 'YY/MM/DD') AND TO_CHAR(LAST_DAY(SYSDATE), 'YY/MM/DD')
+	</select>
+	
+	<!-- 지난달 팔로우 토탈 수 기준 -->
+	<select id = "getLastmonthCount" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{memberNo} 
+			AND TO_CHAR(FOLLOWER_CREATE_DATE) BETWEEN TO_CHAR(ADD_MONTHS(TRUNC(SYSDATE, 'MM'),-1), 'YY/MM/DD') AND TO_CHAR(TO_DATE(TRUNC(SYSDATE, 'MM')-1), 'YY/MM/DD')
+	</select>
+	
+</mapper>

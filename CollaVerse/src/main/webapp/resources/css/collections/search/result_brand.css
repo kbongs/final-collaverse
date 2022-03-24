@@ -1,0 +1,142 @@
+#searchContainer {margin: 50px 400px 50px 400px;}
+
+#searchCategory {
+	display: inline-block;
+	width: 100px;
+	height: 27px;
+	border-color: #730e74;
+	font-family:'DOSGothic';
+	height: 33px;
+}
+
+#searchUser {
+	display: inline-block;
+	width: 500px;
+	height: 27px;
+	border-color: #730e74;
+	font-family:'DOSGothic';
+	height: 33px;
+}
+
+#searchSubmit {
+	display: inline-block;
+	
+}
+
+.mini_title {
+	/* 고정값 */
+	font-family: 'Sam3KRFont';
+	font-size: 30px;
+	color: #730e74;
+	/* 변경값 */
+	text-align: left;
+	margin: 50px 0 30px 150px; /* 위아래 마진은 고정, 왼쪽 마진만 변경하여 사용*/
+	width: 60%;
+}
+
+
+
+#searchSubmit  {
+ 	/* 고정값 */
+	background-color:#720e74;
+	border-radius:7px;
+	border: 2px solid  #faae22;
+	cursor:pointer;
+	color:#ffffff;
+	font-family: 'Sam3KRFont';
+	font-size:14px;
+	padding:10px 27px;
+	text-decoration:none;
+	text-shadow: 0px 0px 0px #faaf22;
+	/* 변경값 */
+	display:inline-block;
+	width: 90px;
+}
+
+#searchSubmit :hover {
+  	/* 고정값 */
+	background-color:#faae22;
+	color: #720e74;
+	border: 2px solid #720e74;
+	
+}
+#searchSubmit :active {
+	position:relative;
+	top:1px;
+}
+
+
+
+/* 반복문 */
+#profile_image{
+	width: 150px;
+	height: 150px;
+	border-style: solid;
+	border-color: rgb(207, 205, 205);
+	border-radius: 70%;
+}
+
+#userContainer {
+	margin: 0 150px 80px 150px;
+}
+
+#user_nickname {
+	font-family: 'DOSGothic';
+	text-align: center;
+}
+
+.user_info_container {
+	/* width: 140px; */
+	/* height: 200px; */
+	margin: 20px 40px 0 0;
+	display: inline-block;
+} 
+
+
+#noSerachList {
+    text-align : center;
+    margin: 150px 0 150px 0px;
+    font-family: 'Sam3KRFont';
+    font-size: 30px;
+    color: #dbeaf8;
+    text-shadow: 4px 4px 0px #faaf22;	
+}
+
+/* 정렬 옵션 선택 */
+#order_container {
+    display: flex;
+    justify-content: center;
+    margin: 0 0 10px 0;
+}
+
+#orderby {
+	 font-family: 'Sam3KRFont';
+	 /* display: inline-block; */
+	 margin: 13px 20px 10px 10px;
+	 color: #730e74; 
+	 font-size: 20px;
+}
+
+#orderby1:hover{
+	color: #faae22;	
+}
+
+#orderby2:hover{
+	color: #faae22;	
+}
+
+#orderby3:hover{
+	color: #faae22;	
+}
+
+ #orderby1, #orderby2, #orderby3 {
+	font-family: 'DOSGothic';
+	display: inline-block;
+	color: #8e6e6e; 
+} 
+
+#orderby2 {
+	font-family: 'DOSGothic';
+	display: inline-block;
+	color: #faae22; 
+} 

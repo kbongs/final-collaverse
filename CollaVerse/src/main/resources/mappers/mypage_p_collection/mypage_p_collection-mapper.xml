@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+
+
+<mapper namespace="com.collaverse.mvc.mypage_p_collection.model.dao.MypagePCollectionMapper">
+	<sql id="mypagePCollectionListSql">
+		SELECT MPC.CLT_NO,
+			   MPC.MEMBER_NO,
+			   MPC.CLT_CONTENT,
+			   MPC.CLT_CREATE_DATE,
+			   MPC.CLT_MODIFY_DATE,
+			   MPC.CLT_STATUS,
+			   MPC.CLT_IMG_01_ONAME,
+			   MPC.CLT_IMG_01_RNAME,
+			   MPC.CLT_WRITER_ID
+		FROM MYPAGE_P_COLLECTION MPC
+		JOIN MEMBER M ON (MPC.MEMBER_NO = M.MEMBER_NO)	
+	</sql>
+	
+
+	<resultMap type="com.collaverse.mvc.mypage_p_collection.model.vo.MypagePCollection" id="MypagePCollectionResultMap">
+		<id property="cltNo" column="CLT_NO"/>
+		<result property="cltMemberNo" column="MEMBER_NO"/>
+		<result property="cltContent" column="CLT_CONTENT"/>
+		<result property="cltCreateDate" column="CLT_CREATE_DATE"/>
+		<result property="cltModifyDate" column="CLT_MODIFY_DATE"/>
+		<result property="cltStatus" column="CLT_STATUS"/>
+		<result property="OriginalFileName01" column="CLT_IMG_01_ONAME"/>
+		<result property="RenamedFileName01" column="CLT_IMG_01_RNAME"/>
+		<result property="cltWriterId" column="CLT_WRITER_ID"/>
+	</resultMap>
+
+
+
+	<select id="getCollectionListY" parameterType="String" resultMap="MypagePCollectionResultMap"
+			resultType="arrayList">
+			SELECT * 
+			FROM MYPAGE_P_COLLECTION
+			WHERE CLT_STATUS = 'Y'
+			    AND CLT_WRITER_ID = #{ id }
+			ORDER BY CLT_NO DESC
+	</select>
+	
+	<insert id="insertMypagePCollection" parameterType="com.collaverse.mvc.mypage_p_collection.model.vo.MypagePCollection"
+		useGeneratedKeys="true" keyProperty="cltNo" keyColumn="CLT_NO">
+		INSERT INTO MYPAGE_P_COLLECTION MPC(
+			MPC.CLT_NO, MPC.MEMBER_NO,
+		    MPC.CLT_CONTENT,
+		    MPC.CLT_CREATE_DATE,  MPC.CLT_MODIFY_DATE,
+		    MPC.CLT_STATUS,
+		    MPC.CLT_IMG_01_ONAME, 
+		    MPC.CLT_IMG_01_RNAME,
+		    MPC.CLT_WRITER_ID
+		) VALUES (
+			SEQ_MPC_CLT_NO.NEXTVAL, #{ cltMemberNo },
+			#{ cltContent },
+			DEFAULT, DEFAULT,
+			DEFAULT,
+			#{ originalFileName01 },
+			#{ renamedFileName01 },
+			#{ cltWriterId }
+		)	
+	</insert>
+	
+	
+	<select id="findCollectionByNo" parameterType="_int" resultMap="MypagePCollectionResultMap">
+			<include refid="mypagePCollectionListSql"/>
+			WHERE MPC.CLT_NO = #{ cltNo }
+	</select>
+	
+	
+	<update id="updateMypagePCollection" parameterType="com.collaverse.mvc.mypage_p_collection.model.vo.MypagePCollection">
+		UPDATE MYPAGE_P_COLLECTION 
+		SET CLT_IMG_01_ONAME = #{ originalFileName01 }, 
+		    CLT_IMG_01_RNAME = #{ renamedFileName01 },
+		    CLT_CONTENT = #{ cltContent },
+			CLT_MODIFY_DATE = SYSDATE
+		WHERE CLT_NO = #{ cltNo }
+	</update>
+	
+	
+	<update id="deleteMypagePCollection" parameterType="com.collaverse.mvc.mypage_p_collection.model.vo.MypagePCollection">
+		UPDATE MYPAGE_P_COLLECTION MPC
+		SET MPC.CLT_STATUS = 'N'
+		WHERE MPC.CLT_NO = #{ cltNo }
+	</update>
+	
+	
+	<select id="getCollectionWriterNickname" parameterType="String" resultType="String">
+		SELECT NICKNAME
+		FROM MEMBER 
+		WHERE ID = #{ id }
+	</select>
+
+	<select id="getCollectionWriterNo" parameterType="String" resultType="_int">
+		SELECT MEMBER_NO
+		FROM MEMBER 
+		WHERE ID =  #{ id }
+	</select>
+	
+	
+	
+	<!-- 팔로우 관련 쿼리 -->
+
+	<select id="followerCheck" parameterType="map" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWER
+		WHERE TO_MEM_NO = #{ toMemNo }
+		    AND FROM_MEM_NO = #{ fromMemNo }
+	</select>
+	
+	
+	<select id="followingCheck" parameterType="map" resultType="_int">
+		SELECT COUNT(*)
+		FROM FOLLOWING
+		WHERE FROM_MEM_NO = #{ fromMemNo }
+   			AND TO_MEM_NO = #{ toMemNo }
+	</select>
+	
+</mapper>

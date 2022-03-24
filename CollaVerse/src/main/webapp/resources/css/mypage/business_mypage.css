@@ -1,0 +1,303 @@
+@charset "UTF-8";
+
+#business {
+  margin: 0 auto;
+  width: 1200px;
+}
+#business .mypage {
+  position: relative;
+  margin-bottom: 50px;
+}
+#business .mypage #brand-photo img {
+  margin-top: 20px;
+  text-align:center;
+  width: 100px;
+  height: 100px;
+  border-style: solid;
+  border-color: rgb(207, 205, 205);
+  border-radius: 70%;
+  overflow: hidden;
+  margin: 35px 0 0 80px;
+}
+#business .mypage #brand-name {
+  font-size: 60px;
+  position: absolute;
+  top: 55px;
+  left: 200px;
+  font-family: 'Sam3KRFont';
+  color: #730e74;
+}
+.fc-sat { color:#0000FF; }    /* 토요일 */
+.fc-sun { color:#FF0000; }    /* 일요일 */
+#business #brand-calendar p {
+  font-size: 40px;
+}
+#business #brand-calendar a {
+	text-decoration-line: none;
+}
+#business #brand-calendar a:active {
+	color: black;
+}
+#business #brand-calendar a #calendar {
+	width: 800px;
+	height: 600px;
+	margin: auto;
+}
+#business #brand-follower>p {
+  font-size: 40px;
+}
+#business #brand-follower #follower {
+  display: flex;
+  position: relative;
+  justify-content: center;
+  left: 100px;
+}
+
+div#follower {}
+
+
+#memebr_nickname {
+	text-shadow: 3px 3px 0px #faaf22;
+}
+
+#col {
+	color: #550c81;
+}
+
+#ver {
+	color: #8c116c;
+}
+
+#se {
+	color: #ae165f;
+}
+
+/*
+.arrow_right:hover {
+	background-color: #faae22;
+}
+*/
+.more:hover {
+	background-color: #faae22;
+}
+
+#no_followernList {
+	text-align: left;
+	margin: 20px 0 20px 150px;
+	/* padding: 0 0 30px 0; */
+}
+
+#business #brand-follower #follower article {
+  margin-right: 25px;
+  height: 100px
+}
+#business #brand-follower article img {
+  text-align:center;
+  width: 90px;
+  height: 90px;
+  border-radius: 70%;
+  overflow: hidden;
+  margin-bottom: 2px;
+}
+#business #brand-follower #follower article div {
+  text-align: center;
+  font-size: 20px;
+}
+#business #brand-follower #follower article .material-icons {
+  position: absolute; 
+  font-size: 80px;
+  left: 1100px;
+  color: #730e74;
+  bottom: 105px;
+}
+#business #brand-follower #follower article .text {
+  font-size: 15px;
+  /* position: absolute; */
+  bottom: 40px;
+  left: 695px;
+  color: #730e74;
+  /* padding: 0 0 30px 0; */
+}
+#business #statistics p {
+  margin-top: 70px;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+#business #statistics #follower-statistic {
+  width: 800px;
+  height: 330px;
+}
+#business #statistics #follower-statistic p {
+  font-size: 60px;
+  text-align: center;
+  margin-left: 200px;
+   font-family: 'Sam3KRFont';
+}
+#business #statistics #follower-statistic div {
+  font-size: 20px;
+  text-align: center;
+  margin-bottom: 30px;
+  margin-left: 200px;
+   font-family: 'Sam3KRFont';
+}
+#business #statistics #follower-statistic ul {
+  column-count: 2;
+  background-color: #faae22;
+  line-height: 3;
+  width: 700px;
+  margin-left: 160px;
+  margin-right: auto;
+
+}
+#business #statistics #follower-statistic ul li {
+  padding-left: -5px;
+  font-size: 20px;
+   font-family: 'Sam3KRFont';
+}
+
+.mini_title {
+	/* 고정값 */
+	font-family: 'Sam3KRFont';
+	font-size: 30px;
+	color: #730e74;
+	text-align: left;
+	margin: 50px 0 30px 150px;
+	/*color: #dbeaf8;
+	text-shadow: 4px 4px 0px #faaf22;
+	display: inline-block;
+	float: left;*/
+	/* text-shadow: -4px -4px 0px #faaf22; */
+}
+#no_collectionList {
+	text-align: left;
+	margin: 20px 0 20px 150px;
+	/* padding: 0 0 30px 0; */
+	font-family: 'Sam3KRFont';
+	font-size: 30px;
+	color: #dbeaf8;
+	text-shadow: 4px 4px 0px #faaf22;
+	display: inline-block;
+	float: left;
+	/* text-shadow: -4px -4px 0px #faaf22; */
+}
+
+#profile_image {
+	width: 150px;
+	height: 150px;
+	border-style: solid;
+	border-color: rgb(207, 205, 205);
+	border-radius: 70%;
+}
+
+/*
+.member_container {
+	margin: 0 150px 80px 150px;
+}
+*/
+
+#member_nickname {
+	font-family: 'DOSGothic';
+	text-align: center;
+	font-size: 20px;
+}
+
+.member_info_container {
+	margin: 0 20px 0 0 ;
+}
+
+/* 컬렉션 */
+#person #person-collection p {
+  margin-top: 70px;
+  font-size: 40px;
+  margin-bottom: 20px;
+}
+#person #person-collection #collection {
+  display: flex;
+  position: relative;
+  justify-content: center;
+}
+#brand #brand-collection #collection article {
+  margin-right: 25px;
+  height: 100px;
+}
+#brand #brand-collection article img {
+  text-align:center;
+  width: 90px;
+  height: 90px;
+  margin-bottom: 2px;
+}
+#brand #brand-collection #collection article div {
+  text-align: center;
+  font-size: 20px;
+}
+#brand #brand-collection #collection article .material-icons {
+  /* position: absolute; */
+  margin-top: 15px;
+  font-size: 60px;
+  left: 690px;
+  color: #730e74;
+}
+#brand #brand-collection #collection article .text {
+  font-size: 15px;
+  /* position: absolute; */
+  bottom: 40px;
+  left: 695px;
+  color: #730e74;
+}
+
+#collection  article .material-icons {
+  /* position: absolute; */
+  margin-top: 15px;
+  font-size: 60px;
+  left: 690px;
+  color: #730e74;
+  /* display: inline-block; */
+  width: 60px;
+}
+
+#brand-calendar {
+	margin: 0 0 120px 0 ;
+}
+
+#col {
+	color: #550c81;
+}
+
+#ver {
+	color: #8c116c;
+}
+
+#se {
+	color: #ae165f;
+}
+
+#brand .mypage #brand-name {
+  font-size: 60px;
+  position: absolute;
+  top: 55px;
+  left: 200px;
+  font-family: 'Sam3KRFont';
+  /* font-size: 30px; */
+  color: #730e74;
+}
+
+#collection_image {
+	width: 150px;
+	height: 150px;
+	
+}
+
+.member_info_container {
+	margin: 0 20px 0 0;
+	width: auto;
+	display: inline-block;
+}
+
+#collection {
+	
+margin: 0px 0px 0px 200px;
+	
+/* width: auto; */
+	
+/* padding: 30px; */
+}
